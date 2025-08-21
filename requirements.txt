@@ -1,0 +1,18 @@
+# Djinn Kernel - Requirements
+# Core system uses only Python standard library
+# No external dependencies required
+
+# Python version requirement
+# python>=3.8
+
+# Optional dependencies for future extensions
+# rich>=10.0.0  # For CLI interfaces
+# asyncio       # Built into Python 3.7+
+# dataclasses   # Built into Python 3.7+
+# typing        # Built into Python 3.5+
+# uuid          # Built into Python standard library
+# hashlib       # Built into Python standard library
+# json          # Built into Python standard library
+# datetime      # Built into Python standard library
+# threading     # Built into Python standard library
+# enum          # Built into Python 3.4+
