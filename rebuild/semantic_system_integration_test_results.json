@@ -1,0 +1,60 @@
+{
+  "test_name": "Semantic System Integration Test",
+  "test_start_time": "2025-08-22T14:18:55.279726",
+  "test_duration_seconds": 2.376472,
+  "total_phases": 7,
+  "successful_phases": 6,
+  "success_rate": 0.8571428571428571,
+  "overall_status": "PASSED",
+  "test_results": [
+    {
+      "test_name": "mock_core_setup",
+      "success": true,
+      "message": "Mock core components initialized successfully",
+      "timestamp": "2025-08-22T14:18:55.281740",
+      "phase": "Mock Core Setup"
+    },
+    {
+      "test_name": "semantic_system_setup",
+      "success": true,
+      "message": "Semantic system components initialized successfully",
+      "timestamp": "2025-08-22T14:18:55.291176",
+      "phase": "Semantic System Setup"
+    },
+    {
+      "test_name": "semantic_learning_cycle",
+      "success": false,
+      "message": "Cycle failed: float division by zero",
+      "timestamp": "2025-08-22T14:18:55.599943",
+      "phase": "Semantic Learning Cycle"
+    },
+    {
+      "test_name": "multi_agent_consensus",
+      "success": true,
+      "message": "Multi-agent consensus successful",
+      "timestamp": "2025-08-22T14:18:55.607321",
+      "phase": "Multi-Agent Consensus"
+    },
+    {
+      "test_name": "governance_amendment_process",
+      "success": true,
+      "message": "Governance amendment process successful",
+      "timestamp": "2025-08-22T14:18:55.611180",
+      "phase": "Governance Amendment Process"
+    },
+    {
+      "test_name": "performance_monitoring_integration",
+      "success": true,
+      "message": "Performance monitoring integration successful",
+      "timestamp": "2025-08-22T14:18:56.127863",
+      "phase": "Performance Monitoring Integration"
+    },
+    {
+      "test_name": "system_stability_and_recovery",
+      "success": true,
+      "message": "System stability and recovery successful",
+      "timestamp": "2025-08-22T14:18:57.655759",
+      "phase": "System Stability and Recovery"
+    }
+  ]
+}

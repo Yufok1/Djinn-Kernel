@@ -1,0 +1,67 @@
+{
+  "test_name": "Complete Semantic System Integration Test",
+  "test_start_time": "2025-08-22T14:47:58.519494",
+  "test_duration_seconds": 45.773982,
+  "total_phases": 8,
+  "successful_phases": 1,
+  "success_rate": 0.125,
+  "overall_status": "FAILED",
+  "test_results": [
+    {
+      "test_name": "core_kernel_setup",
+      "success": true,
+      "message": "REAL core kernel components initialized successfully",
+      "timestamp": "2025-08-22T14:47:58.521555",
+      "phase": "Core Kernel Setup"
+    },
+    {
+      "test_name": "semantic_system_setup",
+      "success": false,
+      "message": "Setup failed: 'SemanticStateManager' object has no attribute 'register_handler'",
+      "timestamp": "2025-08-22T14:48:44.287387",
+      "phase": "Semantic System Setup"
+    },
+    {
+      "test_name": "human_instruction_flow",
+      "success": false,
+      "message": "Flow failed: 'NoneType' object has no attribute 'interpret_instruction'",
+      "timestamp": "2025-08-22T14:48:44.288236",
+      "phase": "Human Instruction Flow"
+    },
+    {
+      "test_name": "semantic_learning_cycle",
+      "success": false,
+      "message": "Cycle failed: 'NoneType' object has no attribute 'start_evolution_cycle'",
+      "timestamp": "2025-08-22T14:48:44.289134",
+      "phase": "Semantic Learning Cycle"
+    },
+    {
+      "test_name": "multi_agent_consensus",
+      "success": false,
+      "message": "Consensus failed: 'NoneType' object has no attribute 'register_agent'",
+      "timestamp": "2025-08-22T14:48:44.289962",
+      "phase": "Multi-Agent Consensus"
+    },
+    {
+      "test_name": "governance_amendment_process",
+      "success": false,
+      "message": "Process failed: 'NoneType' object has no attribute 'propose_amendment'",
+      "timestamp": "2025-08-22T14:48:44.290852",
+      "phase": "Governance Amendment Process"
+    },
+    {
+      "test_name": "performance_monitoring_integration",
+      "success": false,
+      "message": "Integration failed: 'NoneType' object has no attribute 'capture_performance_snapshot'",
+      "timestamp": "2025-08-22T14:48:44.291703",
+      "phase": "Performance Monitoring Integration"
+    },
+    {
+      "test_name": "system_stability_and_recovery",
+      "success": false,
+      "message": "Stability test failed: 'NoneType' object has no attribute 'get_synchrony_status'",
+      "timestamp": "2025-08-22T14:48:44.292576",
+      "phase": "System Stability and Recovery"
+    }
+  ]
+}

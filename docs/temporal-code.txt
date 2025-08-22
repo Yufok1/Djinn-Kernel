@@ -1,0 +1,308 @@
+Djinn Kernel — Production Guide (Dialogue → Operations)
+
+Date: Aug 16, 2025
+
+1) Executive Summary
+
+This guide defines a production architecture where natural dialogue becomes lawful kernel operations. It specifies principles, modules, planes, deployment practices, security, observability, and runbooks for two interpretation strategies:
+
+Conversational Parser (LM-free): deterministic grammar and rules mapping sentences to actions.
+
+Interpretive LM (model-based): a small language model that translates dialogue into an action plan under strict governance.
+
+Default posture: use the parser for routine, reproducible work; use the LM as a governed fallback in the Forbidden Zone (FZ) when the parser lacks coverage.
+
+Kernel contract: Law → Operator → Arbitration → Synchrony → Reflection.
+Edge contract: Dialogue → (Parser ⟶ Lawful) ∥ (Parser-fallback ⟶ LM in FZ) → Plan → Kernel.
+
+2) Core Principles
+
+Two zones: lawful (total) and exploratory (partial). Lawful cycles must halt with valid state; exploratory runs are quarantined and governed.
+
+Fixed-point identity: canonical payloads anchored with namespaced UUIDs yield stable trait identity.
+
+Event-sourced, ephemeral execution: the append-only ledger is the durable source of truth; read-models are disposable and rebuilt by replay.
+
+Lattice & convergence: monotone transforms converge or are halted by arbitration.
+
+Human-in-the-loop: sensitive actions (divergence, codex change) require Meta-Auditor approval.
+
+Dialogue as data: instructions, parses, and plans are first-class artifacts with hashes and witnesses.
+
+3) System Architecture
+3.1 Planes (stacked)
+
+Edge Plane: Instruction Interpretation Layer (IIL), Dialogue Intake, Policy/Redaction, Confidence Scorer.
+
+Control Plane: Arbitration Stack, Meta-Auditor, Synchrony Manager.
+
+Recursion Plane: Trait Engine, Stability Enforcer, CollapseMap Engine.
+
+Exploration Plane: Expansion Seed System, µ-Recursion Chambers (Forbidden Zone).
+
+Ledger Plane: Akashic Recursion Core (events), Divergence, Codex ledgers.
+
+Economic Plane: optional credits/markets.
+
+Governance Plane: Codex Council & Amendment Validation.
+
+3.2 Infrastructure
+
+Orchestrator (e.g., Kubernetes), one service per module, signed immutable images.
+
+mTLS mesh; Synchrony gateways for hash/phase locks.
+
+Tamper-proof multi-ledger backplane.
+
+Scalable µ-recursion clusters for FZ workloads.
+
+Observability plane for Reflection Index and dialogue metrics.
+
+4) Core Modules (service layer)
+Module	Role
+uuid_anchor	Trait UUID anchoring (fixed-point identity)
+trait_engine	Inheritance convergence
+stability_enforcer	Envelope compression
+violation_monitor	Violation Pressure (VP) quantizer
+arbitration_stack	Rulings: LAW_OK → … → COLLAPSE
+forbidden_zone_manager	µ-recursion, quarantine, resource caps
+collapsemap_engine	Entropy pruning, collapse pathways
+synchrony_manager	Hash gates (SPL)
+ledger_writer	Append-only Akashic writer
+reflection_monitor	Health metrics
+iil_router	Routes dialogue to Parser or LM
+conversational_parser	Deterministic natural-ish grammar → action plan (LM-free)
+lm_interpreter (FZ)	Model-based translator (pinned, hashed) → proposed plan + witness
+prompt_policy	Redaction, safety filters, prompt/plan policy
+witness_recorder	Stores input text hashes, parse AST, plan, and confidence scores
+
+Data Stores: AkashicRecursionCore, CollapseMapLedger, ArbitrationEventLedger, ForbiddenZoneRegistry, CodexAmendmentArchive, DialogueWitnessLog.
+
+5) Instruction Interpretation Layer (IIL)
+5.1 Edge Flow (parser-first with governed fallback)
+
+Intake: receive raw dialogue; timestamp and hash.
+
+Policy/Redaction: remove secrets/PII per codex; retain salted hashes.
+
+Parser attempt: produce a deterministic Lawful Action Plan when confident.
+
+Fallback (FZ): if low confidence/coverage, run the interpretive LM in a µ-recursion chamber (no network, pinned model, deterministic settings). Attach a witness (model id, config, input/output hashes, confidence). Output is a Proposed Plan (unlawful) until reviewed.
+
+Plan validation: apply policy checks; optionally compute VP on projected outcomes.
+
+SPL-Dialog gate: hash and compare artifacts (dialogue, plan, expected deltas) for synchrony.
+
+Phase commit: on SPL pass and arbitration clearance, commit actions; ledger dialogue and plan.
+
+5.2 Plan schema (conceptual)
+
+Goals, constraints, safety guards
+
+Trait changes and envelopes
+
+Weights and convergence strategy
+
+Execution steps (run/simulate/authorize µ-recursion)
+
+Rollback criteria and observation hooks
+
+6) Synchrony Phase Lock Protocol (SPL)
+
+Layers: SPL₀ Initiation → SPL₁ Artifact Prep → SPL-Dialog → SPL₂ Hash Gate → SPL₃ Drift Review → SPL₄ Phase Commit → SPL₅ Codex Seal.
+
+SPL-Dialog verifies dialogue, parse/plan, and kernel-bound action hashes align with the control-plane view. Failures (hash mismatch, timestamp drift, repeated drift) escalate to arbitration or FZ.
+
+7) Arbitration Doctrine (VP → Ruling)
+
+VP₀ Fully Lawful → continue
+
+VP₁ Stable Drift → continue; log
+
+VP₂ Instability Pressure → arbitration review
+
+VP₃ Critical Divergence → FZ quarantine; Meta-Auditor token
+
+VP₄ Collapse Threshold → hard termination; CollapseMap and pruning
+
+For LM-sourced plans, apply VP twice: on projected effects and again on post-execution state.
+
+8) Forbidden Zone (FZ) Doctrine
+
+Entry: VP ≥ VP₃, any LM-sourced plan, or parser confidence below threshold.
+
+Behavior: hermetic µ-recursion chamber (no network), resource/time caps, deterministic clock. Outputs are unlawful until stabilized and re-anchored. Record a full witness: model/version hash (if used), config, dialogue hash, plan hash, runtime metrics.
+
+Reintegration: Stability Restoration or Codex Amendment.
+Sentencing: if VP escalates to VP₄ → collapse execution and pruning.
+
+9) Trait Inheritance & Stability
+
+Actuator model: parents (P₁, P₂), weights (W₁, W₂), envelope δ, compression factor C, bloom drift ε.
+
+Convergence: T_base = (W₁·P₁ + W₂·P₂)/(W₁+W₂), then T_child = T_base ± ε within δ.
+
+Envelope: δ = BaseMutationRate × CompressionFactor; C = 1/(1+VP) (higher VP → tighter compression).
+
+Advanced: categorical dominance maps; tensor-wise envelopes.
+IIL instructions like “tighten/loosen” translate to envelope/weight adjustments.
+
+10) Production Deployment
+10.1 Images & Repos
+
+Separate images for iil_router, conversational_parser, lm_interpreter, prompt_policy.
+
+Signed, immutable builds; verify at admission; pin LM artifacts by hash (if enabled).
+
+10.2 Cluster Prereqs
+
+Namespaces per plane; deny-all network default; least-privilege RBAC.
+
+10.3 Config & Secrets
+
+Versioned parser grammars and synonym tables.
+
+LM model/version pointers and inference caps (if enabled).
+
+SPL tolerances; arbitration thresholds; Meta-Auditor tokens.
+
+10.4 Boot Sequence (Day-0)
+
+Sovereign initialization and Meta-Auditor registration
+
+Akashic genesis and event writers
+
+Kernel lawfold activation and VP monitor
+
+IIL activation: parser online, LM fallback gated
+
+Optional economic plane
+
+End-to-end synchrony (incl. SPL-Dialog) and seal
+
+Civilization activation
+
+11) Operational Runbooks
+11.1 Lawful dialogue path
+
+Intake → Parser OK → SPL-Dialog → SPL₂ → Ledger → Execute → Next cycle.
+
+11.2 Parser escalation path
+
+Intake → Parser low confidence → LM in FZ → Proposed Plan → Arbitration → Stabilize/Compress → SPL-Dialog → Commit.
+
+11.3 Synchrony incident
+
+Hash mismatch or timestamp drift → hold, compute VP → route to FZ if unstable.
+
+11.4 Collapse execution
+
+Entropy compression; record CollapseMap; prune artifacts; freeze threads; ledger sentencing.
+
+12) Pruning & Purging Policy
+
+PURGE: ledger + minimal witness only.
+
+PRUNE_MIN: witness + CollapseMap top-K; no binaries/traces.
+
+PRUNE_TTL: PRUNE_MIN plus short-lived trace ring buffer.
+
+LM prompts/plans reduce to hashed witnesses by default; longer retention requires governance approval.
+
+13) APIs (sketch — no code)
+
+POST /dialogue/interpret → {plan, confidence, source: parser|lm, witnesses}
+
+POST /kernel/proceed → execute plan into lawful cycle
+
+POST /arbitration/review → VP/ruling
+
+POST /forbidden/activate → schedule µ-recursion chamber
+
+POST /synchrony/verify → {hashes} → {status}
+
+POST /ledger/append → event write
+
+All outputs are UUID-anchored; all writes are append-only.
+
+14) CI/CD & Governance
+
+Parser grammar/versioning with regression suites.
+
+LM changes require Council approval and Meta-Auditor signature (model id, weights hash, prompt templates).
+
+Reproducible builds, SBOM, provenance (SLSA).
+
+Policy snapshots sealed via codex amendments.
+
+15) Observability & SLOs
+
+Dialogue metrics: parser coverage %, escalation rate %, LM confidence distribution, plan-to-state divergence, hallucination incidents (target ≪ 1e-4).
+
+Golden signals: VP distributions, SPL gate pass rate, FZ entry rate, collapse count, ledger latency, replay time.
+
+Reflection Index: lineage curvature, symmetry, collapse frequency.
+
+SLO hints: parser coverage ≥ 90% for routine ops; escalation MTTR < 2 minutes; SPL-Dialog failure rate < 0.1%.
+
+16) Security Model
+
+Parser path: deterministic; minimal attack surface.
+
+LM path (FZ only): no network, pinned model, deterministic settings; prompt/output hashing; redaction; token/CPU caps.
+
+Identity & auth: per-agent signing; short-lived µ-recursion tokens.
+
+Data: ledgers are WORM; read-models disposable.
+
+Supply chain: signed images; admission checks; seccomp/AppArmor.
+
+17) Testing Strategy
+
+Unit: convergence, compression, UUID determinism, parser rules.
+
+Property: envelope invariants, VP monotonicity, SPL gates.
+
+Dialogue regression: golden prompts → stable plans.
+
+LM evaluation (if enabled): plan validity, safety policy compliance, reproducibility under pinning.
+
+Chaos/FZ drills: forced VP₃/VP₄; quarantine and collapse.
+
+Replay DR: restore from ledgers only; measure RTO/RPO.
+
+18) Migration & Disaster Recovery
+
+Rehydrate state by replay; snapshots are convenience only.
+
+Maintain offsite, immutable copies of ledgers and DialogueWitnessLog; test replays regularly.
+
+19) Glossary
+
+Instruction Interpretation Layer (IIL): edge system translating dialogue into plans.
+
+Dialogue Witness: hashed record of input text, parser/LM outputs, and confidence.
+
+SPL-Dialog: synchrony stage for dialogue/plan artifacts.
+
+Violation Pressure (VP): normalized deviation driving arbitration.
+
+µ-Recursion (FZ): governed exploratory execution.
+
+20) Minimal Reference Implementation (shape)
+
+Deterministic JSON → UUIDv5 anchor
+
+Weighted convergence → stability compression
+
+VP calculation → arbitration class
+
+SPL-Dialog + SPL₂ hash equality → phase commit
+
+Append-only ledgers (recursion, divergence, dialogue witnesses)
+
+Parser-first routing with LM fallback in FZ and strict governance
+
+Final Guidance
+
+Adopt a parser-first posture for routine operations (maximum reproducibility, minimal risk). Enable a governed LM fallback in FZ for ambiguous or long-tail requests. Track parser coverage and escalation rates; as coverage improves, tighten LM budgets and retention. This preserves the ability to “just talk” while maintaining lawfulness and auditability.
