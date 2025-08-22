@@ -4,7 +4,7 @@ A sophisticated AI system implementing Kleene's Recursion Theorem for sovereign 
 
 ## Overview
 
-The Djinn Kernel is a mathematical foundation for creating self-sustaining recursive identities that demand mathematical completion. It operates as a symbiotic recursive organism - expanding to encompass systems, then collapsing back into stability, creating a self-encompassing recursive cycle. It implements a complete event-driven coordination system with temporal isolation safety mechanisms, violation pressure monitoring, and trait convergence engines.
+The Djinn Kernel is a mathematical foundation for creating self-sustaining recursive identities that require mathematical completion. It operates as a symbiotic recursive organism - expanding to encompass systems, then collapsing back into stability, creating a self-encompassing recursive cycle. It implements a complete event-driven coordination system with temporal isolation safety mechanisms, violation pressure monitoring, and trait convergence engines.
 
 ## Core Architecture
 
