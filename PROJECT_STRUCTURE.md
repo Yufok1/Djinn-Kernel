@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Djinn Kernel is organized into a modular architecture with 24 core components, each serving specific mathematical and operational functions. The kernel operates as a symbiotic recursive organism that expands and collapses symbiotically within itself, naturally encompassing other systems in its recursive cycle. This document provides a detailed breakdown of the project structure, component relationships, and architectural patterns.
+The Djinn Kernel is organized into a modular architecture with 24 core components, each serving specific mathematical and operational functions. This document provides a detailed breakdown of the project structure, component relationships, and architectural patterns.
 
 ## Core Architecture Layers
 
